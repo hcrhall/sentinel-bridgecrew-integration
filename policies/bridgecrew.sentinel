@@ -22,10 +22,13 @@ body = {
     },
 }
 
-req = http.request("https://www.bridgecrew.cloud/global/terraformEnterprise/webhook").with_body(json.marshal(body)).with_header("Authorization", bc_api_key)
+req = http.request("https://www.bridgecrew.cloud/api/v1/global/terraformEnterprise/webhook").
+        with_body(json.marshal(body)).
+        with_header("Authorization", bc_api_key)
+
 resp = json.unmarshal(http.post(req).body).data
 
-if (length(resp.violations) > 0) {
+if (resp.violations is not empty) {
    print("Violations:")
    for resp.violations as violation {
        print(violation.title)
@@ -34,5 +37,9 @@ if (length(resp.violations) > 0) {
        print("")
    }
 }
+
 print("More details: " + resp.details_url)
-main = rule { resp.violations }
+
+main = rule {
+    resp.violations is empty
+}

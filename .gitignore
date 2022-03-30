@@ -1,1 +1,3 @@
-0c7adb95-463e-4e25-a478-123069a5eacd
+mocks/*
+.sentinel/*
+.DS_Store
